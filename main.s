@@ -55,7 +55,22 @@ Start
  ; TExaS_Init sets bus clock at 80 MHz
      BL  TExaS_Init ; voltmeter, scope on PD3
  ; Initialization goes here
-
+	
+	LDR R1, =SYSCTL_RCGCGPIO_R ;clock
+	LDR R0, [R1]
+	ORR R0, R0, #0x10 ; setting bit 4 for port E
+	STR R0, [R1] ;storing to clock
+	NOP ;delay for clock
+	NOP
+	LDR R1, =GPIO_PORTE_DIR_R
+	AND R0, #0XF0 
+	ORR R0, #0X08 ;0 input 1 output pe3 output 
+	STR R0, [R1]
+	LDR R1, =GPIO_PORTE_DEN_R
+	AND R0, #0xF0
+	ORR R0, #0X08 
+	STR R0, [R1]
+ 
 
      CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
