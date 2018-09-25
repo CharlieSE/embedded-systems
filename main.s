@@ -67,11 +67,10 @@ Start
 	ORR R0, #0X08 ;0 input 1 output pe3 output 
 	STR R0, [R1]
 	LDR R1, =GPIO_PORTE_DEN_R
-	AND R0, #0xF0
+	BIC R0, #0x0F
 	ORR R0, #0X08 
 	STR R0, [R1]
  
-
      CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
