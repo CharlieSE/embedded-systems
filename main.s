@@ -41,6 +41,8 @@ GPIO_PORTF_LOCK_R  EQU 0x40025520
 GPIO_PORTF_CR_R    EQU 0x40025524
 GPIO_LOCK_KEY      EQU 0x4C4F434B  ; Unlocks the GPIO_CR register
 SYSCTL_RCGCGPIO_R  EQU 0x400FE608
+	
+DUTY_50 EQU	0x004B2A9C
 
        IMPORT  TExaS_Init
        THUMB
@@ -72,10 +74,10 @@ Start
 	ORR R0, #0X0C 
 	STR R0, [R1]
  
-     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
+    CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
-	MOV R0, #250	;First argument for delay function, # of ms
+	LDR R0, =DUTY_50	;First argument for delay function, # of ms
 	BL 	Delay
 	
 	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
