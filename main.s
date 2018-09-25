@@ -74,10 +74,10 @@ Start
      CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
-	MOV R0, #250
+	MOV R0, #250	;First argument for delay function, # of ms
 	BL 	Delay
-	;hgjg
-	LDR	R0, =GPIO_PORTE_DATA_R
+	
+	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
 	LDR R1, [R0]
 	EOR R1, #0x08
    
