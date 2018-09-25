@@ -62,7 +62,7 @@ loop
 ; main engine goes here
 	MOV R0, #250
 	BL 	Delay
-	
+	;hgjg
 	LDR	R0, =GPIO_PORTE_DATA_R
 	LDR R1, [R0]
 	EOR R1, #0x08
