@@ -58,17 +58,17 @@ Start
 	
 	LDR R1, =SYSCTL_RCGCGPIO_R ;clock
 	LDR R0, [R1]
-	ORR R0, R0, #0x10 ; setting bit 4 for port E
-	STR R0, [R1] ;storing to clock
-	NOP ;delay for clock
+	ORR R0, R0, #0x30 	;setting bit 4 for port E
+	STR R0, [R1] 		;storing to clock
+	NOP 				;delay for clock
 	NOP
 	LDR R1, =GPIO_PORTE_DIR_R
-	AND R0, #0XF0 
+	BIC R0, #0X0C 
 	ORR R0, #0X08 ;0 input 1 output pe3 output 
 	STR R0, [R1]
 	LDR R1, =GPIO_PORTE_DEN_R
-	BIC R0, #0x0F
-	ORR R0, #0X08 
+	BIC R0, #0x0C
+	ORR R0, #0X0C 
 	STR R0, [R1]
  
      CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
