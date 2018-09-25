@@ -66,6 +66,7 @@ Start
 	BIC R0, #0X0C 
 	ORR R0, #0X08 ;0 input 1 output pe3 output 
 	STR R0, [R1]
+	
 	LDR R1, =GPIO_PORTE_DEN_R
 	BIC R0, #0x0C
 	ORR R0, #0X0C 
@@ -80,13 +81,14 @@ loop
 	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
 	LDR R1, [R0]
 	EOR R1, #0x08
+	STR	R1, [R0]
    
     B   loop
       
 Delay
 wait SUBS R0, R0, #1
 	 BNE  wait
-	 BL	  LR
+	 BX	  LR
 	
      ALIGN      ; make sure the end of this section is aligned
      END        ; end of file
