@@ -60,11 +60,20 @@ Start
      CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
-
+	MOV R0, #250
+	BL 	Delay
+	
+	LDR	R0, =GPIO_PORTE_DATA_R
+	LDR R1, [R0]
+	EOR R1, #0x08
    
-     B    loop
-
+    B   loop
       
+Delay
+wait SUBS R0, R0, #1
+	 BNE  wait
+	 BL	  LR
+	
      ALIGN      ; make sure the end of this section is aligned
      END        ; end of file
 
