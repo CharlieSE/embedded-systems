@@ -137,7 +137,7 @@ ARM Macro Assembler    Page 3
                                                             on PD3
    67 00000004         ; Initialization goes here
    68 00000004         
-   69 00000004 4955            LDR              R1, =SYSCTL_RCGCGPIO_R ;clock
+   69 00000004 4957            LDR              R1, =SYSCTL_RCGCGPIO_R ;clock
    70 00000006 6808            LDR              R0, [R1]
    71 00000008 F040 0030       ORR              R0, R0, #0x30 ;setting bit 4 fo
                                                             r port E
@@ -145,23 +145,23 @@ ARM Macro Assembler    Page 3
    73 0000000E BF00            NOP                          ;delay for clock
    74 00000010 BF00            NOP
    75 00000012         
-   76 00000012 4953            LDR              R1, =GPIO_PORTE_DIR_R
+   76 00000012 4955            LDR              R1, =GPIO_PORTE_DIR_R
    77 00000014 F020 000C       BIC              R0, #0X0C
    78 00000018 F040 0008       ORR              R0, #0X08   ;0 input 1 output p
                                                             e3 output 
    79 0000001C 6008            STR              R0, [R1]
    80 0000001E         
-   81 0000001E 4951            LDR              R1, =GPIO_PORTE_DEN_R
+   81 0000001E 4953            LDR              R1, =GPIO_PORTE_DEN_R
    82 00000020 F020 000C       BIC              R0, #0x0C
    83 00000024 F040 000C       ORR              R0, #0X0C
    84 00000028 6008            STR              R0, [R1]
    85 0000002A         
-   86 0000002A 494F            LDR              R1, =GPIO_PORTF_DIR_R
+   86 0000002A 4951            LDR              R1, =GPIO_PORTF_DIR_R
    87 0000002C F020 0010       BIC              R0, #0X10
    88 00000030 F040 0010       ORR              R0, #0X10
    89 00000034 6008            STR              R0, [R1]
    90 00000036         
-   91 00000036 494D            LDR              R1, =GPIO_PORTF_DEN_R
+   91 00000036 494F            LDR              R1, =GPIO_PORTF_DEN_R
    92 00000038 F020 0010       BIC              R0, #0X10
    93 0000003C F040 0010       ORR              R0, #0X10
    94 00000040 6008            STR              R0, [R1]
@@ -173,10 +173,10 @@ ARM Macro Assembler    Page 3
    98 00000044         loop
    99 00000044         ; main engine goes here
   100 00000044         
-  101 00000044 484A    next    LDR              R0, =DUTY_70 ;OFF Delay, in ms
+  101 00000044 484C    next    LDR              R0, =DUTY_70 ;OFF Delay, in ms
   102 00000046 F000 F860       BL               Delay
   103 0000004A F000 F861       BL               Toggle
-  104 0000004E 4849            LDR              R0, =DUTY_30 ;ON Delay, in ms
+  104 0000004E 484B            LDR              R0, =DUTY_30 ;ON Delay, in ms
   105 00000050 F000 F85B       BL               Delay
   106 00000054 F000 F85C       BL               Toggle
   107 00000058 F001 0204       AND              R2, R1, #0x04
@@ -184,7 +184,7 @@ ARM Macro Assembler    Page 3
   109 0000005E D0F1            BEQ              next
   110 00000060 F000 F85C       BL               Loop1
   111 00000064         
-  112 00000064 4844    next1   LDR              R0, =DUTY_50 ;ON & OFF Delay, i
+  112 00000064 4846    next1   LDR              R0, =DUTY_50 ;ON & OFF Delay, i
                                                             n ms
   113 00000066 F000 F850       BL               Delay
   114 0000006A F000 F851       BL               Toggle
@@ -200,11 +200,11 @@ ARM Macro Assembler    Page 4
 
 
   120 0000007E         
-  121 0000007E 483D    next2   LDR              R0, =DUTY_30 ;OFF Delay, in ms
+  121 0000007E 483F    next2   LDR              R0, =DUTY_30 ;OFF Delay, in ms
   122 00000080 F000 F843       BL               Delay
   123 00000084 F000 F844       BL               Toggle
   124 00000088 F000 F859       BL               Check_F
-  125 0000008C 4838            LDR              R0, =DUTY_70 ;ON Delay, in ms
+  125 0000008C 483A            LDR              R0, =DUTY_70 ;ON Delay, in ms
   126 0000008E F000 F83C       BL               Delay
   127 00000092 F000 F83D       BL               Toggle
   128 00000096 F001 0204       AND              R2, R1, #0x04
@@ -212,11 +212,11 @@ ARM Macro Assembler    Page 4
   130 0000009C D0EF            BEQ              next2
   131 0000009E F000 F83D       BL               Loop1
   132 000000A2         
-  133 000000A2 4836    next3   LDR              R0, =DUTY_10 ;OFF Delay, in ms
+  133 000000A2 4838    next3   LDR              R0, =DUTY_10 ;OFF Delay, in ms
   134 000000A4 F000 F831       BL               Delay
   135 000000A8 F000 F832       BL               Toggle
   136 000000AC F000 F847       BL               Check_F
-  137 000000B0 4833            LDR              R0, =DUTY_90 ;ON Delay, in ms
+  137 000000B0 4835            LDR              R0, =DUTY_90 ;ON Delay, in ms
   138 000000B2 F000 F82A       BL               Delay
   139 000000B6 F000 F82B       BL               Toggle
   140 000000BA F001 0204       AND              R2, R1, #0x04
@@ -224,11 +224,11 @@ ARM Macro Assembler    Page 4
   142 000000C0 D0EF            BEQ              next3
   143 000000C2 F000 F82B       BL               Loop1
   144 000000C6         
-  145 000000C6 482E    next4   LDR              R0, =DUTY_90 ;OFF Delay, in ms
+  145 000000C6 4830    next4   LDR              R0, =DUTY_90 ;OFF Delay, in ms
   146 000000C8 F000 F81F       BL               Delay
   147 000000CC F000 F820       BL               Toggle
   148 000000D0 F000 F835       BL               Check_F
-  149 000000D4 4829            LDR              R0, =DUTY_10 ;ON Delay, in ms
+  149 000000D4 482B            LDR              R0, =DUTY_10 ;ON Delay, in ms
   150 000000D6 F000 F818       BL               Delay
   151 000000DA F000 F819       BL               Toggle
   152 000000DE F001 0204       AND              R2, R1, #0x04
@@ -242,14 +242,14 @@ ARM Macro Assembler    Page 4
   160 000000EC         
   161 000000EC         B_LED
   162 000000EC         While
-  163 000000EC F000 F82E       BL               Exit_F
-  164 000000F0 4821            LDR              R0, =DUTY_50 ;OFF Delay, in ms
+  163 000000EC F000 F830       BL               Exit_F
+  164 000000F0 4823            LDR              R0, =DUTY_50 ;OFF Delay, in ms
   165 000000F2 F000 F80A       BL               Delay
   166 000000F6 F000 F80B       BL               Toggle
-  167 000000FA 481F            LDR              R0, =DUTY_50 ;ON Delay, in ms
+  167 000000FA 4821            LDR              R0, =DUTY_50 ;ON Delay, in ms
   168 000000FC F000 F805       BL               Delay
   169 00000100 F000 F806       BL               Toggle
-  170 00000104 F000 F822       BL               Exit_F
+  170 00000104 F000 F824       BL               Exit_F
   171 00000108         
   172 00000108 E7F0            B                While
   173 0000010A         
@@ -269,7 +269,7 @@ ARM Macro Assembler    Page 5
   181 0000010E 4770            BX               LR
   182 00000110         
   183 00000110         Toggle
-  184 00000110 481C            LDR              R0, =GPIO_PORTE_DATA_R 
+  184 00000110 481E            LDR              R0, =GPIO_PORTE_DATA_R 
                                                             ;Toggle LED at PE3
   185 00000112 6801            LDR              R1, [R0]
   186 00000114 F081 0108       EOR              R1, #0x08
@@ -277,7 +277,7 @@ ARM Macro Assembler    Page 5
   188 0000011A 4770            BX               LR
   189 0000011C         
   190 0000011C         Loop1
-  191 0000011C 4819            LDR              R0, =GPIO_PORTE_DATA_R 
+  191 0000011C 481B            LDR              R0, =GPIO_PORTE_DATA_R 
                                                             ;Toggle LED at PE3
   192 0000011E B510            PUSH             {LR, R4}
   193 00000120 F000 F808       BL               LED_Off
@@ -295,40 +295,44 @@ ARM Macro Assembler    Page 5
   205 0000013C 4770            BX               LR
   206 0000013E         
   207 0000013E         Check_F
-  208 0000013E 4812            LDR              R0, =GPIO_PORTF_DATA_R 
+  208 0000013E B403            PUSH             {R0, R1}
+  209 00000140 4813            LDR              R0, =GPIO_PORTF_DATA_R 
                                                             ;Toggle LED at PE3
-  209 00000140 6801            LDR              R1, [R0]
-  210 00000142 F001 0210       AND              R2, R1, #0x10
-  211 00000146 2A00            CMP              R2, #0
-  212 00000148 D1D0            BNE              B_LED
-  213 0000014A 4770            BX               LR
-  214 0000014C         
-  215 0000014C         Exit_F
-  216 0000014C 480E            LDR              R0, =GPIO_PORTF_DATA_R 
+  210 00000142 6801            LDR              R1, [R0]
+  211 00000144 F001 0210       AND              R2, R1, #0x10
+  212 00000148 2A00            CMP              R2, #0
+  213 0000014A D1CF            BNE              B_LED
+  214 0000014C BC03            POP              {R0, R1}
+  215 0000014E 4770            BX               LR
+  216 00000150         
+  217 00000150         Exit_F
+  218 00000150 B403            PUSH             {R0, R1}
+  219 00000152 480F            LDR              R0, =GPIO_PORTF_DATA_R 
                                                             ;Toggle LED at PE3
-  217 0000014E 6801            LDR              R1, [R0]
-  218 00000150 F001 0210       AND              R2, R1, #0x10
-  219 00000154 2A00            CMP              R2, #0
-  220 00000156 F43F AF75       BEQ              next
-  221 0000015A 4770            BX               LR
-  222 0000015C         
-  223 0000015C                 ALIGN                        ; make sure the end
+  220 00000154 6801            LDR              R1, [R0]
+  221 00000156 F001 0210       AND              R2, R1, #0x10
+  222 0000015A 2A00            CMP              R2, #0
+  223 0000015C F43F AF72       BEQ              next
+  224 00000160 BC03            POP              {R0, R1}
+  225 00000162 4770            BX               LR
+  226 00000164         
+  227 00000164                 ALIGN                        ; make sure the end
                                                              of this section is
                                                              aligned
-  224 0000015C                 END                          ; end of file
+  228 00000164                 END                          ; end of file
               400FE608 
               40024400 
               4002451C 
-              40025400 
-              4002551C 
-              00693BA8 
-              002D1991 
 
 
 
 ARM Macro Assembler    Page 6 
 
 
+              40025400 
+              4002551C 
+              00693BA8 
+              002D1991 
               004B2A9C 
               000F0886 
               00874CB3 
@@ -375,7 +379,7 @@ Symbol: B_LED
    Definitions
       At line 161 in file main.s
    Uses
-      At line 212 in file main.s
+      At line 213 in file main.s
 Comment: B_LED used once
 Check_F 0000013E
 
@@ -406,11 +410,11 @@ Symbol: Delay
       At line 165 in file main.s
       At line 168 in file main.s
 
-Exit_F 0000014C
+Exit_F 00000150
 
 Symbol: Exit_F
    Definitions
-      At line 215 in file main.s
+      At line 217 in file main.s
    Uses
       At line 163 in file main.s
       At line 170 in file main.s
@@ -497,7 +501,7 @@ Symbol: next
       At line 101 in file main.s
    Uses
       At line 109 in file main.s
-      At line 220 in file main.s
+      At line 223 in file main.s
 
 next1 00000064
 
@@ -669,14 +673,14 @@ Symbol: GPIO_PORTF_DATA_R
    Definitions
       At line 35 in file main.s
    Uses
-      At line 208 in file main.s
+      At line 209 in file main.s
 
 
 
 ARM Macro Assembler    Page 3 Alphabetic symbol ordering
 Absolute symbols
 
-      At line 216 in file main.s
+      At line 219 in file main.s
 
 GPIO_PORTF_DEN_R 4002551C
 

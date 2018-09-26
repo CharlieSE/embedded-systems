@@ -205,19 +205,23 @@ LED_Off
 	BX	LR
 	
 Check_F
+	PUSH {R0, R1}
 	LDR	R0, =GPIO_PORTF_DATA_R	;Toggle LED at PE3
 	LDR R1, [R0]
 	AND R2, R1, #0x10
 	CMP R2, #0
 	BNE B_LED 
+	POP {R0, R1}
 	BX LR
 	
 Exit_F
+	PUSH {R0, R1}
 	LDR	R0, =GPIO_PORTF_DATA_R	;Toggle LED at PE3
 	LDR R1, [R0]
 	AND R2, R1, #0x10
 	CMP R2, #0
 	BEQ next
+	POP {R0, R1}
 	BX LR
 	
      ALIGN      ; make sure the end of this section is aligned
