@@ -14,7 +14,7 @@
 ;   2) The system starts with the the LED toggling at 2Hz,
 ;      which is 2 times per second with a duty-cycle of 30%.
 ;      Therefore, the LED is ON for 150ms and off for 350 ms.
-;   3) When the button (PE1) is pressed-and-released increase
+;   3) When the button (PE2) is pressed-and-released increase
 ;      the duty cycle by 20% (modulo 100%). Therefore for each
 ;      press-and-release the duty cycle changes from 30% to 70% to 70%
 ;      to 90% to 10% to 30% so on
@@ -59,7 +59,7 @@ DUTY_90	EQU	0x00874CB3	;ON for 450ms
        EXPORT  Start
 Start
  ; TExaS_Init sets bus clock at 80 MHz
-     BL  TExaS_Init ; voltmeter, scope on PD3
+    BL  TExaS_Init ; voltmeter, scope on PD3
  ; Initialization goes here
 	
 	LDR R1, =SYSCTL_RCGCGPIO_R ;clock
@@ -68,6 +68,7 @@ Start
 	STR R0, [R1] 		;storing to clock
 	NOP 				;delay for clock
 	NOP
+	
 	LDR R1, =GPIO_PORTE_DIR_R
 	BIC R0, #0X0C 
 	ORR R0, #0X08 ;0 input 1 output pe3 output 
@@ -81,7 +82,7 @@ Start
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
-	LDR R0, =DUTY_50	;First argument for delay function, # of ms
+	LDR R0, =DUTY_30	;First argument for delay function, # of ms
 	BL 	Delay
 	
 	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
