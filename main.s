@@ -152,10 +152,9 @@ next4	LDR R0, =DUTY_90	;OFF Delay, in ms
    
     B   loop
 	
-	
-
-      
-B_LED	BEQ next
+B_LED	
+		
+		BEQ next
 		B	Breathing
 	  
 Delay
