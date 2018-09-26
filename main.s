@@ -112,6 +112,7 @@ next	LDR R0, =DUTY_70	;OFF Delay, in ms
 next1	LDR R0, =DUTY_50	;ON & OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
+		BL Check_F
 		AND R2, R1, #0x04
 		CMP R2, #0x00
 		BEQ next1
@@ -120,6 +121,7 @@ next1	LDR R0, =DUTY_50	;ON & OFF Delay, in ms
 next2 	LDR R0, =DUTY_30	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
+		BL Check_F
 		LDR R0, =DUTY_70	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
@@ -131,6 +133,7 @@ next2 	LDR R0, =DUTY_30	;OFF Delay, in ms
 next3 	LDR R0, =DUTY_10	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
+		BL Check_F
 		LDR R0, =DUTY_90	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
@@ -142,20 +145,35 @@ next3 	LDR R0, =DUTY_10	;OFF Delay, in ms
 next4	LDR R0, =DUTY_90	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
+		BL Check_F
 		LDR R0, =DUTY_10	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		AND R2, R1, #0x04
 		CMP R2, #0
 		BEQ next4
-		BL 	Loop1		
-   
+		BL 	Loop1	
+
+		
+		
     B   loop
 	
 B_LED	
-		
-		BEQ next
-		B	Breathing
+While
+	BL Exit_F
+	LDR R0, =DUTY_50	;OFF Delay, in ms
+	BL 	Delay
+	BL 	Toggle
+	LDR R0, =DUTY_50	;ON Delay, in ms
+	BL 	Delay
+	BL 	Toggle
+	BL Exit_F
+	
+	B While
+	
+	
+	
+		;B	Breathing
 	  
 Delay
 wait SUBS R0, R0, #1
@@ -186,7 +204,21 @@ LED_Off
 	STR R1, [R0]
 	BX	LR
 	
+Check_F
+	LDR	R0, =GPIO_PORTF_DATA_R	;Toggle LED at PE3
+	LDR R1, [R0]
+	AND R2, R1, #0x10
+	CMP R2, #0
+	BNE B_LED 
+	BX LR
 	
+Exit_F
+	LDR	R0, =GPIO_PORTF_DATA_R	;Toggle LED at PE3
+	LDR R1, [R0]
+	AND R2, R1, #0x10
+	CMP R2, #0
+	BEQ next
+	BX LR
 	
      ALIGN      ; make sure the end of this section is aligned
      END        ; end of file
