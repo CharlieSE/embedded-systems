@@ -82,6 +82,9 @@ Start
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
+
+		
+		
 next	LDR R0, =DUTY_30	;First argument for delay function, # of ms
 		BL 	Delay
 		BL Toggle
@@ -89,42 +92,39 @@ next	LDR R0, =DUTY_30	;First argument for delay function, # of ms
 		CMP R2, #0
 		BEQ next
 		BL Loop1
-		
-		
-next1	LDR R0, =DUTY_30	;First argument for delay function, # of ms
-		BL 	Delay
-		BL Toggle
-		AND R2, R1, #0x04
-		CMP R2, #0
-		BEQ next1
-		BL Loop1
 	
 		
-next2	LDR R0, =DUTY_50	;First argument for delay function, # of ms
+next1	LDR R0, =DUTY_50	;First argument for delay function, # of ms
 		BL 	Delay
 		BL Toggle
 		AND R2, R1, #0x04
 		CMP R2, #0x00
-		BEQ next2
+		BEQ next1
 		BL Loop1
 		
-next3 	LDR R0, =DUTY_70	;First argument for delay function, # of ms
+next2 	LDR R0, =DUTY_70	;First argument for delay function, # of ms
+		BL 	Delay
+		BL Toggle
+		AND R2, R1, #0x04
+		CMP R2, #0
+		BEQ next2
+		BL Loop1
+   
+next3 	LDR R0, =DUTY_90	;First argument for delay function, # of ms
 		BL 	Delay
 		BL Toggle
 		AND R2, R1, #0x04
 		CMP R2, #0
 		BEQ next3
 		BL Loop1
-   
-next4 	LDR R0, =DUTY_90	;First argument for delay function, # of ms
+		
+next4	LDR R0, =DUTY_10	;First argument for delay function, # of ms
 		BL 	Delay
 		BL Toggle
 		AND R2, R1, #0x04
 		CMP R2, #0
 		BEQ next4
-		BL Loop1
-
-	
+		BL Loop1		
    
     B   loop
       
