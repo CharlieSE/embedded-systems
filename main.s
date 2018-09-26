@@ -42,11 +42,15 @@ GPIO_PORTF_CR_R    EQU 0x40025524
 GPIO_LOCK_KEY      EQU 0x4C4F434B  ; Unlocks the GPIO_CR register
 SYSCTL_RCGCGPIO_R  EQU 0x400FE608
 
+;Duty Cycle Constants
 DUTY_10	EQU	0x000F0886	;ON for 50ms
 DUTY_30	EQU	0x002D1991	;ON for 150ms
 DUTY_50	EQU	0x004B2A9C	;ON for 250ms
 DUTY_70	EQU	0x00693BA8	;ON for 350ms
 DUTY_90	EQU	0x00874CB3	;ON for 450ms
+
+;Breathing Cycle Constants
+AIR_100	EQU	0x001E110B	;100 ms
 
        IMPORT  TExaS_Init
        THUMB
@@ -82,8 +86,6 @@ Start
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
-
-		
 		
 next	LDR R0, =DUTY_70	;OFF Delay, in ms
 		BL 	Delay
@@ -139,6 +141,9 @@ next4	LDR R0, =DUTY_90	;OFF Delay, in ms
    
     B   loop
       
+B_LED	BEQ next
+		B	Breathing
+	  
 Delay
 wait SUBS R0, R0, #1
 	 BNE  wait
