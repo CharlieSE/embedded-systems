@@ -82,13 +82,49 @@ Start
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
 ; main engine goes here
-	LDR R0, =DUTY_30	;First argument for delay function, # of ms
-	BL 	Delay
+next	LDR R0, =DUTY_30	;First argument for delay function, # of ms
+		BL 	Delay
+		BL Toggle
+		AND R2, R1, #0x04
+		CMP R2, #0
+		BEQ next
+		BL Loop1
+		
+		
+next1	LDR R0, =DUTY_30	;First argument for delay function, # of ms
+		BL 	Delay
+		BL Toggle
+		AND R2, R1, #0x04
+		CMP R2, #0
+		BEQ next1
+		BL Loop1
 	
-	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
-	LDR R1, [R0]
-	EOR R1, #0x08
-	STR	R1, [R0]
+		
+next2	LDR R0, =DUTY_50	;First argument for delay function, # of ms
+		BL 	Delay
+		BL Toggle
+		AND R2, R1, #0x04
+		CMP R2, #0x00
+		BEQ next2
+		BL Loop1
+		
+next3 	LDR R0, =DUTY_70	;First argument for delay function, # of ms
+		BL 	Delay
+		BL Toggle
+		AND R2, R1, #0x04
+		CMP R2, #0
+		BEQ next3
+		BL Loop1
+   
+next4 	LDR R0, =DUTY_90	;First argument for delay function, # of ms
+		BL 	Delay
+		BL Toggle
+		AND R2, R1, #0x04
+		CMP R2, #0
+		BEQ next4
+		BL Loop1
+
+	
    
     B   loop
       
@@ -96,6 +132,19 @@ Delay
 wait SUBS R0, R0, #1
 	 BNE  wait
 	 BX	  LR
+Toggle
+	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
+	LDR R1, [R0]
+	EOR R1, #0x08
+	STR	R1, [R0]
+	BX LR		
+Loop1 	
+	LDR	R0, =GPIO_PORTE_DATA_R	;Toggle LED at PE3
+	LDR R1, [R0]
+	AND R2, R1, #0x04
+	CMP R2, #0
+	BNE Loop1
+	BX LR
 	
      ALIGN      ; make sure the end of this section is aligned
      END        ; end of file
