@@ -78,6 +78,17 @@ Start
 	BIC R0, #0x0C
 	ORR R0, #0X0C 
 	STR R0, [R1]
+	
+	LDR R1, =GPIO_PORTF_DIR_R
+	BIC R0, #0X10
+	ORR R0, #0X10
+	STR R0, [R1]
+	
+	LDR R1, =GPIO_PORTF_DEN_R
+	BIC R0, #0X10
+	ORR R0, #0X10
+	STR R0, [R1]
+
  
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
@@ -138,6 +149,9 @@ next4	LDR R0, =DUTY_90	;OFF Delay, in ms
 		BL 	Loop1		
    
     B   loop
+	
+	
+
       
 Delay
 wait SUBS R0, R0, #1
@@ -167,6 +181,8 @@ LED_Off
 	BIC	R1, #0x08
 	STR R1, [R0]
 	BX	LR
+	
+	
 	
      ALIGN      ; make sure the end of this section is aligned
      END        ; end of file
