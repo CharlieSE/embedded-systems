@@ -53,7 +53,7 @@ DUTY_90	EQU	0x00874CB3	;ON for 450ms
 AIR_100		EQU	0x001E110B	;100 ms
 AIR_5 		EQU 0x000180DA 	;5ms
 AIR_DIFF	EQU 0x000301B5	;10% increase
-
+AIR_CMP		EQU	0x001C9037	;95%
        IMPORT  TExaS_Init
        THUMB
        AREA    DATA, ALIGN=2
@@ -138,7 +138,10 @@ next	LDR R0, =DUTY_70	;OFF Delay, in ms
 next1	LDR R0, =DUTY_50	;ON & OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
-		BL Check_F
+		BL  Check_F
+		LDR R0, =DUTY_50	;ON & OFF Delay, in ms
+		BL 	Delay
+		BL 	Toggle
 		AND R2, R1, #0x04
 		CMP R2, #0x00
 		BEQ next1
@@ -179,26 +182,52 @@ next4	LDR R0, =DUTY_90	;OFF Delay, in ms
 		CMP R2, #0
 		BEQ next4
 		BL 	Loop1	
-
-		
 		
     B   loop
 	
 B_LED	
+	LDR R12, =AIR_5
+	MOV	R4, #1
+	MOV	R5, #5
 While
-	BL Exit_F
-	LDR R0, =AIR_100	
-	LDR	R1, =AIR_5		;ON Delay, in ms
-	SUBS R0, R0, R1		;OFF Delay, in ms
-	BL 	B_Delay
+	LDR R0, =AIR_100
+	SUBS R0, R0, R12		;OFF Delay, in ms
+	BL 	Delay
 	BL 	Toggle
-	LDR R0, =AIR_5	;ON Delay, in ms
-	BL 	B_Delay
+	MOV	R0, R12				;ON Delay, in ms
+	BL 	Delay
 	BL 	Toggle
+	SUBS R5, #1
+	CMP	R5, #0
+	BEQ	D_Check
+	BL 	Exit_F
 	
-	B While
+	B 	While
 
-	  
+D_Check
+	MOV R5, #5
+	MOV	R6, #1
+	CMP	R6, R4
+	
+	BEQ	D_Inc
+	
+	LDR	R7, =AIR_DIFF
+	LDR R8, =AIR_5
+	SUBS R12, R7
+	CMP	R12, R8
+	BNE	While
+	ORR	R4, #1
+	B	While
+	
+D_Inc
+	LDR	R7, =AIR_DIFF
+	LDR R8, =AIR_CMP
+	SUBS R12, R7
+	CMP	R12, R8
+	BNE	While
+	AND	R4, #0
+	B	While
+	
 Delay
 wait SUBS R0, R0, #1
 	 BNE  wait
@@ -227,13 +256,6 @@ LED_Off
 	BIC	R1, #0x08
 	STR R1, [R0]
 	BX	LR
-	
-B_Delay
-	;Check inc./dec.
-	;Delay
-wait2	SUBS R0, #1
-		BNE	 wait2
-		BX LR
 	
 Check_F
 	PUSH {R0, R1, LR, R4}
