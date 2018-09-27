@@ -50,7 +50,9 @@ DUTY_70	EQU	0x00693BA8	;ON for 350ms
 DUTY_90	EQU	0x00874CB3	;ON for 450ms
 
 ;Breathing Cycle Constants
-AIR_100	EQU	0x001E110B	;100 ms
+AIR_100		EQU	0x001E110B	;100 ms
+AIR_5 		EQU 0x000180DA 	;5ms
+AIR_DIFF	EQU 0x000301B5	;10% increase
 
        IMPORT  TExaS_Init
        THUMB
@@ -185,19 +187,17 @@ next4	LDR R0, =DUTY_90	;OFF Delay, in ms
 B_LED	
 While
 	BL Exit_F
-	LDR R0, =DUTY_50	;OFF Delay, in ms
-	BL 	Delay
+	LDR R0, =AIR_100	
+	LDR	R1, =AIR_5		;ON Delay, in ms
+	SUBS R0, R0, R1		;OFF Delay, in ms
+	BL 	B_Delay
 	BL 	Toggle
-	LDR R0, =DUTY_50	;ON Delay, in ms
-	BL 	Delay
+	LDR R0, =AIR_5	;ON Delay, in ms
+	BL 	B_Delay
 	BL 	Toggle
-	BL Exit_F
 	
 	B While
-	
-	
-	
-		;B	Breathing
+
 	  
 Delay
 wait SUBS R0, R0, #1
@@ -228,24 +228,33 @@ LED_Off
 	STR R1, [R0]
 	BX	LR
 	
+B_Delay
+	;Check inc./dec.
+	;Delay
+wait2	SUBS R0, #1
+		BNE	 wait2
+		BX LR
+	
 Check_F
-	PUSH {R0, R1}
+	PUSH {R0, R1, LR, R4}
+	BL LED_Off
 	LDR	R0, =GPIO_PORTF_DATA_R	;Toggle LED at PE3
 	LDR R1, [R0]
 	AND R2, R1, #0x10
 	CMP R2, #0
 	BEQ B_LED 
-	POP {R0, R1}
+	POP {R0, R1, LR, R4}
 	BX LR
 	
 Exit_F
-	PUSH {R0, R1}
+	PUSH {R0, R1, LR, R4}
+	BL	LED_Off
 	LDR	R0, =GPIO_PORTF_DATA_R	;Toggle LED at PE3
 	LDR R1, [R0]
 	AND R2, R1, #0x10
 	CMP R2, #0
 	BNE next
-	POP {R0, R1}
+	POP {R0, R1, LR, R4}
 	BX LR
 	
      ALIGN      ; make sure the end of this section is aligned
