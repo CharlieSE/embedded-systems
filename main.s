@@ -73,6 +73,11 @@ Start
 	NOP 				;delay for clock
 	NOP
 	
+	LDR R0, =GPIO_PORTF_AFSEL_R
+	LDR R1, [R0]
+	AND R1, #0x00
+	STR R1, [R0]
+	
 	LDR R1, =GPIO_PORTE_DIR_R
 	BIC R0, #0X0C 
 	ORR R0, #0X08 ;0 input 1 output pe3 output 
@@ -83,16 +88,34 @@ Start
 	ORR R0, #0X0C 
 	STR R0, [R1]
 	
-	LDR R1, =GPIO_PORTF_DIR_R
+	LDR	R1, =GPIO_PORTF_LOCK_R
+	LDR	R0, =GPIO_LOCK_KEY
+	STR R0, [R1]
+	
+	LDR R0, =GPIO_PORTF_PUR_R 
+	LDR R1, [R0]
+	BIC R1, #0x10
+	ORR R1, #0x10
+	STR R1, [R0]
+	
+	LDR R0, =GPIO_PORTF_AFSEL_R
+	LDR R1, [R0]
+	AND R1, #0x00
+	STR R1, [R0]
+
+	LDR R1, =GPIO_PORTF_CR_R
 	BIC R0, #0X10
 	ORR R0, #0X10
+	STR R0, [R1]
+	
+	LDR R1, =GPIO_PORTF_DIR_R
+	BIC R0, #0X10
 	STR R0, [R1]
 	
 	LDR R1, =GPIO_PORTF_DEN_R
 	BIC R0, #0X10
 	ORR R0, #0X10
 	STR R0, [R1]
-
  
     CPSIE  I    ; TExaS voltmeter, scope runs on interrupts
 loop  
@@ -101,6 +124,7 @@ loop
 next	LDR R0, =DUTY_70	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
+		BL 	Check_F
 		LDR R0, =DUTY_30	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
@@ -210,7 +234,7 @@ Check_F
 	LDR R1, [R0]
 	AND R2, R1, #0x10
 	CMP R2, #0
-	BNE B_LED 
+	BEQ B_LED 
 	POP {R0, R1}
 	BX LR
 	
@@ -220,7 +244,7 @@ Exit_F
 	LDR R1, [R0]
 	AND R2, R1, #0x10
 	CMP R2, #0
-	BEQ next
+	BNE next
 	POP {R0, R1}
 	BX LR
 	
