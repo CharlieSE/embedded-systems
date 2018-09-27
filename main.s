@@ -50,10 +50,10 @@ DUTY_70	EQU	0x00693BA8	;ON for 350ms
 DUTY_90	EQU	0x00874CB3	;ON for 450ms
 
 ;Breathing Cycle Constants
-AIR_100		EQU	0x001E110B	;100 ms
-AIR_5 		EQU 0x000180DA 	;5ms
-AIR_DIFF	EQU 0x000301B5	;10% increase
-AIR_CMP		EQU	0x001C9037	;95%
+AIR_100		EQU	0x000301B4	;10ms  
+AIR_5 		EQU 0x0000267C	;0.5ms
+AIR_DIFF	EQU 0x00004CF8	;10% increase
+AIR_CMP		EQU	0x0002DB34	;95%
        IMPORT  TExaS_Init
        THUMB
        AREA    DATA, ALIGN=2
@@ -123,11 +123,11 @@ Start
 loop  
 ; main engine goes here
 		
-next	LDR R0, =DUTY_70	;OFF Delay, in ms
+next	LDR R0, =DUTY_30	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		BL 	Check_F
-		LDR R0, =DUTY_30	;ON Delay, in ms
+		LDR R0, =DUTY_70	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		AND R2, R1, #0x04
@@ -147,11 +147,11 @@ next1	LDR R0, =DUTY_50	;ON & OFF Delay, in ms
 		BEQ next1
 		BL 	Loop1
 		
-next2 	LDR R0, =DUTY_30	;OFF Delay, in ms
+next2 	LDR R0, =DUTY_70	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		BL Check_F
-		LDR R0, =DUTY_70	;ON Delay, in ms
+		LDR R0, =DUTY_30	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		AND R2, R1, #0x04
@@ -159,11 +159,11 @@ next2 	LDR R0, =DUTY_30	;OFF Delay, in ms
 		BEQ next2
 		BL 	Loop1
    
-next3 	LDR R0, =DUTY_10	;OFF Delay, in ms
+next3 	LDR R0, =DUTY_90	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		BL Check_F
-		LDR R0, =DUTY_90	;ON Delay, in ms
+		LDR R0, =DUTY_10	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		AND R2, R1, #0x04
@@ -171,11 +171,11 @@ next3 	LDR R0, =DUTY_10	;OFF Delay, in ms
 		BEQ next3
 		BL 	Loop1
 		
-next4	LDR R0, =DUTY_90	;OFF Delay, in ms
+next4	LDR R0, =DUTY_10	;OFF Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		BL Check_F
-		LDR R0, =DUTY_10	;ON Delay, in ms
+		LDR R0, =DUTY_90	;ON Delay, in ms
 		BL 	Delay
 		BL 	Toggle
 		AND R2, R1, #0x04
