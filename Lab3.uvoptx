@@ -165,7 +165,7 @@
         <SetRegEntry>
           <Number>0</Number>
           <Key>DLGDARM</Key>
-          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(3006=1034,298,1440,659,1)(3004=1033,519,1439,808,1)</Name>
+          <Name>(1010=-1,-1,-1,-1,0)(1007=-1,-1,-1,-1,0)(1008=-1,-1,-1,-1,0)(1009=-1,-1,-1,-1,0)(1012=-1,-1,-1,-1,0)(3006=1034,298,1440,659,1)(3004=728,486,1134,775,1)</Name>
         </SetRegEntry>
         <SetRegEntry>
           <Number>0</Number>
@@ -183,7 +183,40 @@
           <Name>-U-O4622 -O4622 -S3 -FO29</Name>
         </SetRegEntry>
       </TargetDriverDllRegistry>
-      <Breakpoint/>
+      <Breakpoint>
+        <Bp>
+          <Number>0</Number>
+          <Type>0</Type>
+          <LineNumber>191</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>950</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>\Mac\Home\Desktop\embedded-system\\Mac\Home\Desktop\embedded-system\main.s</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Lab3\/Mac/Home/Desktop/embedded-system/main.s\191</Expression>
+        </Bp>
+        <Bp>
+          <Number>1</Number>
+          <Type>0</Type>
+          <LineNumber>201</LineNumber>
+          <EnabledFlag>1</EnabledFlag>
+          <Address>980</Address>
+          <ByteObject>0</ByteObject>
+          <HtxType>0</HtxType>
+          <ManyObjects>0</ManyObjects>
+          <SizeOfObject>0</SizeOfObject>
+          <BreakByAccess>0</BreakByAccess>
+          <BreakIfRCount>1</BreakIfRCount>
+          <Filename>\Mac\Home\Desktop\embedded-system\\Mac\Home\Desktop\embedded-system\main.s</Filename>
+          <ExecCommand></ExecCommand>
+          <Expression>\\Lab3\/Mac/Home/Desktop/embedded-system/main.s\201</Expression>
+        </Bp>
+      </Breakpoint>
       <MemoryWindow1>
         <Mm>
           <WinNumber>1</WinNumber>

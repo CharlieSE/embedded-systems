@@ -222,7 +222,7 @@ D_Check
 D_Inc
 	LDR	R7, =AIR_DIFF
 	LDR R8, =AIR_CMP
-	SUBS R12, R7
+	ADD R12, R7 	;changed subs to add
 	CMP	R12, R8
 	BNE	While
 	AND	R4, #0
