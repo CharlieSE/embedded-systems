@@ -18,7 +18,7 @@ NVIC_ST_CURRENT_R     EQU 0xE000E018
 ; Make it so NVIC_ST_CURRENT_R can be used as a 24-bit time
 ; Input: none
 ; Output: none
-; Modifies: ??
+; Modifies: NVIC_ST CTRL/RELOAD/CURRENT Registers
 SysTick_Init
  ; **-UUU-**Implement this function****
 	LDR R2, =NVIC_ST_CTRL_R
