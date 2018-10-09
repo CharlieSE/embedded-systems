@@ -21,8 +21,21 @@ NVIC_ST_CURRENT_R     EQU 0xE000E018
 ; Modifies: ??
 SysTick_Init
  ; **-UUU-**Implement this function****
+	LDR R2, =NVIC_ST_CTRL_R
+	MOV	R0, #0
+	STR	R0, [R2]					;Disables SysTick for setup
+	
+	LDR	R1, =NVIC_ST_RELOAD_R
+	LDR	R0, =0x00FFFFFF
+	STR R0, [R1]					;Sets reset value to 210ms
+	
+	LDR R1, =NVIC_ST_CURRENT_R
+	MOV	R0, #0x0000FFFF
+	STR	R0, [R1]					;Clears SysTick Counter
+	
+	MOV R0, #5
+	STR R0, [R2]					;Enables SysTick
 
-  
     BX  LR                          ; return
 
 

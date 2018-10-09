@@ -1,7 +1,7 @@
 ;****************** main.s ***************
-; Program written by: **-UUU-*Your Names**update this***
+; Program written by: Carlos Borja & Nyree Masoian
 ; Date Created: 2/14/2017
-; Last Modified: 8/29/2018
+; Last Modified: 10/09/2018
 ; You are given a simple stepper motor software system with one input and
 ; four outputs. This program runs, but you are asked to add minimally intrusive
 ; debugging instruments to verify it is running properly. 
