@@ -3,8 +3,8 @@
  * Auto generated Run-Time-Environment Component Configuration File
  *      *** Do not modify ! ***
  *
- * Project: 'Lab3' 
- * Target:  'Lab3' 
+ * Project: 'SysTick' 
+ * Target:  'SysTick' 
  */
 
 #ifndef RTE_COMPONENTS_H
