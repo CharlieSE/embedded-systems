@@ -37,16 +37,17 @@ GPIO_PORTF_DATA_R  EQU 0x400253FC
 GPIO_PORTF_DIR_R   EQU 0x40025400
 GPIO_PORTF_AFSEL_R EQU 0x40025420
 GPIO_PORTF_DEN_R   EQU 0x4002551C
+	
 ; RAM Area
           AREA    DATA, ALIGN=2
 Index     SPACE 4 ; index into Stepper table 0,1,2,3
 Direction SPACE 4 ; -1 for CCW, 0 for stop 1 for CW
 
 ;place your debug variables in RAM here
-DataBuffer	  SPACE 100
 TimeBuffer	  SPACE 400
+DataBuffer	  SPACE 100
+TimePointer	  SPACE 4
 DataPointer	  SPACE 4
-TimePointer	  SPACE 4	
 
 ; ROM Area
         IMPORT TExaS_Init
@@ -153,18 +154,20 @@ Debug_Init
       PUSH {R0-R4,LR}
 	  
 ;Populate Buffers	  
-	  LDR R0, =DataBuffer
+	  LDR R0, =DataBuffer ;Starts at 0x2000.019C
 	  MOV R1, #0xFF
 	  MOV R2, #0
-loop1 STR R1, [R0,R2*4]
+loop1 STR R1, [R0,R2]
 	  ADD R2, R2, #1
 	  CMP R2, #100
 	  BNE loop1
 	  
-	  LDR R0, =TimeBuffer
-	  LDR R1, #0xFFFFFFFF
+	  LDR R0, =TimeBuffer ;Starts at 0x2000.000C
+	  LDR R1, =0xFFFFFFFF
 	  MOV R2, #0
-loop2 STR R1, [R0,R2*4]
+	  MOV R4, #4
+loop2 MUL R3, R2, R4
+	  STR R1, [R0,R3]
 	  ADD R2, R2, #1
 	  CMP R2, #100
 	  BNE loop2
