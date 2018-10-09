@@ -43,6 +43,10 @@ Index     SPACE 4 ; index into Stepper table 0,1,2,3
 Direction SPACE 4 ; -1 for CCW, 0 for stop 1 for CW
 
 ;place your debug variables in RAM here
+DataBuffer	  SPACE 100
+TimeBuffer	  SPACE 400
+DataPointer	  SPACE 4
+TimePointer	  SPACE 4	
 
 ; ROM Area
         IMPORT TExaS_Init
@@ -147,8 +151,36 @@ Wait
       
 Debug_Init 
       PUSH {R0-R4,LR}
-; you write this
+	  
+;Populate Buffers	  
+	  LDR R0, =DataBuffer
+	  MOV R1, #0xFF
+	  MOV R2, #0
+loop1 STR R1, [R0,R2*4]
+	  ADD R2, R2, #1
+	  CMP R2, #100
+	  BNE loop1
+	  
+	  LDR R0, =TimeBuffer
+	  LDR R1, #0xFFFFFFFF
+	  MOV R2, #0
+loop2 STR R1, [R0,R2*4]
+	  ADD R2, R2, #1
+	  CMP R2, #100
+	  BNE loop2
+	  
+;Data & Time Pointer init
+	  LDR R0, =DataPointer
+	  LDR R1, =DataBuffer
+	  STR R1, [R0]
+	  
+	  LDR R0, =TimePointer
+	  LDR R1, =TimeBuffer
+	  STR R1, [R0]
 
+;Start SysTick_Init
+	  BL SysTick_Init
+	  
       POP {R0-R4,PC}
 ;Debug capture      
 Debug_Capture 
