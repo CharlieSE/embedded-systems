@@ -156,6 +156,9 @@ Wait
 Debug_Init 
       PUSH {R0-R4,LR}
 	  
+	  ;BL PortF_Init
+	  ;BL Heartbeat_A
+		
 ;Populate Buffers	  
 	  LDR R0, =DataBuffer ;Starts at 0x2000.019C
 	  MOV R1, #0xFF
@@ -201,6 +204,8 @@ loop2 MUL R3, R2, R4
 Debug_Capture 
       PUSH {R0-R6,LR}
 	  
+	  ;BL Heartbeat_B
+	  
 	  LDR R0, =Counter
 	  LDR R1, [R0]
 	  CMP R1, #100
@@ -242,7 +247,63 @@ finish
 	   POP  {R0-R6,PC}
 	   BX LR 
 
+PortF_Init
 
+	LDR R1, =SYSCTL_RCGCGPIO_R ;clock
+	LDR R0, [R1]
+	ORR R0, R0, #0x20 ;setting bit 5 for port F
+	STR R0, [R1] ;storing to clock
+	NOP ;delay for clock
+	NOP
+
+	LDR R0, =GPIO_PORTF_AFSEL_R
+	LDR R1, [R0]
+	AND R1, #0x00
+	STR R1, [R0]
+
+	LDR R1, =GPIO_PORTF_DIR_R
+	ORR R0, #0x04
+	STR R0, [R1]
+
+	LDR R1, =GPIO_PORTF_DEN_R
+	ORR R0, #0x04
+	STR R0, [R1]
+	
+	BX	LR
+	
+Heartbeat_A
+	MOV R3, #0
+beat1	
+	LDR	R1, =GPIO_PORTF_DATA_R
+	LDR	R0, [R1]
+	EOR R0, #0x04
+	STR R0, [R1]
+	LDR R2, =0x002D1991
+	SUB R2, #-1
+	LDR R0, [R1]
+	EOR R0, #0x04
+	STR R0, [R1]
+	ADD R3, #1
+	CMP R3, #5
+	BNE beat1
+	BX	LR
+	
+Heartbeat_B
+	MOV R3, #0
+beat2	
+	LDR	R1, =GPIO_PORTF_DATA_R
+	LDR	R0, [R1]
+	EOR R0, #0x04
+	STR R0, [R1]
+	LDR R2, =0x00693BA8
+	SUB R2, #-1
+	LDR R0, [R1]
+	EOR R0, #0x04
+	STR R0, [R1]
+	ADD R3, #1
+	CMP R3, #5
+	BNE beat2
+	BX	LR
 
       ALIGN      ; make sure the end of this section is aligned
       END        ; end of file
