@@ -156,8 +156,8 @@ Wait
 Debug_Init 
       PUSH {R0-R4,LR}
 	  
-	  ;BL PortF_Init
-	  ;BL Heartbeat_A
+	  BL PortF_Init
+	  BL Heartbeat_A
 		
 ;Populate Buffers	  
 	  LDR R0, =DataBuffer ;Starts at 0x2000.019C
@@ -204,7 +204,7 @@ loop2 MUL R3, R2, R4
 Debug_Capture 
       PUSH {R0-R6,LR}
 	  
-	  ;BL Heartbeat_B
+	  BL Heartbeat_B
 	  
 	  LDR R0, =Counter
 	  LDR R1, [R0]
@@ -273,35 +273,40 @@ PortF_Init
 	
 Heartbeat_A
 	MOV R3, #0
+	
 beat1	
 	LDR	R1, =GPIO_PORTF_DATA_R
 	LDR	R0, [R1]
 	EOR R0, #0x04
 	STR R0, [R1]
-	LDR R2, =0x002D1991
-	SUB R2, #-1
-	LDR R0, [R1]
-	EOR R0, #0x04
-	STR R0, [R1]
+	LDR R2, =0x0000E886
+	
+waiting
+	SUBS R2, #1
+	BNE	waiting
+	
 	ADD R3, #1
-	CMP R3, #5
+	CMP R3, #10
 	BNE beat1
 	BX	LR
 	
+	
 Heartbeat_B
 	MOV R3, #0
+	
 beat2	
 	LDR	R1, =GPIO_PORTF_DATA_R
 	LDR	R0, [R1]
 	EOR R0, #0x04
 	STR R0, [R1]
-	LDR R2, =0x00693BA8
-	SUB R2, #-1
-	LDR R0, [R1]
-	EOR R0, #0x04
-	STR R0, [R1]
+	LDR R2, =0x000A0886
+	
+waiting2
+	SUBS R2, #1
+	BNE	waiting2
+	
 	ADD R3, #1
-	CMP R3, #5
+	CMP R3, #10
 	BNE beat2
 	BX	LR
 
