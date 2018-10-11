@@ -213,7 +213,7 @@ Debug_Capture
 	  
 	  LDR R0, =GPIO_PORTE_DATA_R
 	  LDR R1, [R0]
-	  AND R1, #0X1F
+	  AND R1, #0x1F
 	  
 	  LDR R4, =NVIC_ST_CURRENT_R
 	  LDR R5, [R4]
@@ -279,7 +279,7 @@ beat1
 	LDR	R0, [R1]
 	EOR R0, #0x04
 	STR R0, [R1]
-	LDR R2, =0x0000E886
+	LDR R2, =0x00000FFF
 	
 waiting
 	SUBS R2, #1
@@ -299,7 +299,7 @@ beat2
 	LDR	R0, [R1]
 	EOR R0, #0x04
 	STR R0, [R1]
-	LDR R2, =0x000A0886
+	LDR R2, =0x0000FFFF
 	
 waiting2
 	SUBS R2, #1
