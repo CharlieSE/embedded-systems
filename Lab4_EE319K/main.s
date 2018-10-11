@@ -48,6 +48,9 @@ TimeBuffer	  SPACE 400
 DataBuffer	  SPACE 100
 TimePointer	  SPACE 4
 DataPointer	  SPACE 4
+Counter   	  SPACE 4
+PrevTime	  SPACE 4
+
 
 ; ROM Area
         IMPORT TExaS_Init
@@ -181,6 +184,15 @@ loop2 MUL R3, R2, R4
 	  LDR R1, =TimeBuffer
 	  STR R1, [R0]
 
+	  LDR R0, =Counter
+	  LDR R1, [R0]
+	  MOV R1, #0
+	  STR R1, [R0]
+	  
+	  LDR R0, =PrevTime
+	  LDR R1, =0x00FFFFFF
+	  STR R1, [R0]
+	  
 ;Start SysTick_Init
 	  BL SysTick_Init
 	  
@@ -188,9 +200,47 @@ loop2 MUL R3, R2, R4
 ;Debug capture      
 Debug_Capture 
       PUSH {R0-R6,LR}
-; you write this
+	  
+	  LDR R0, =Counter
+	  LDR R1, [R0]
+	  CMP R1, #100
+	  BEQ finish
+	  
+	  LDR R0, =GPIO_PORTE_DATA_R
+	  LDR R1, [R0]
+	  AND R1, #0X1F
+	  
+	  LDR R4, =NVIC_ST_CURRENT_R
+	  LDR R5, [R4]
+	  
+	  LDR R2, =DataPointer
+	  LDR R3, [R2] ;loading address of data buffer
+	  STRB R1, [R3]
+	  ADD R3, R3, #1 ;R3 data pointer
+	  STR R3, [R2]
+	  
+	  ;prev - current
+	  LDR R0, =PrevTime
+	  LDR R1, [R0]
+	  SUBS R1, R1, R5
+	  LDR R2, =0x0000FFFF
+	  AND R1, R2
+	  STR R5, [R0]  
+	  
+	  LDR R2, =TimePointer
+	  LDR R3, [R2] ;loading address of time buffer
+	  STR R1, [R3]
+	  ADD R3, R3, #4 ;R3 time pointer
+	  STR R3, [R2]
 
-      POP  {R0-R6,PC}
+	  LDR R0, =Counter
+	  LDR R1, [R0]
+	  ADD R1, #1
+	  STR R1, [R0]
+	  
+finish 
+	   POP  {R0-R6,PC}
+	   BX LR 
 
 
 
