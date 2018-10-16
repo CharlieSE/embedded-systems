@@ -279,7 +279,7 @@ beat1
 	LDR	R0, [R1]
 	EOR R0, #0x04
 	STR R0, [R1]
-	LDR R2, =0x00000FFF
+	LDR R2, =0x0000FFFF
 	
 waiting
 	SUBS R2, #1
@@ -299,7 +299,7 @@ beat2
 	LDR	R0, [R1]
 	EOR R0, #0x04
 	STR R0, [R1]
-	LDR R2, =0x0000FFFF
+	LDR R2, =0x0001FFFF
 	
 waiting2
 	SUBS R2, #1
